@@ -18,7 +18,7 @@ public class NotificationControllerIntegrationTest {
 
     @Test
     public void sendEmail_shouldReturnOk() throws Exception {
-        mockMvc.perform(get("/send-email")
+        mockMvc.perform(get("/notify/send-email")
                 .param("email", "test@example.com"))
                 .andExpect(status().isOk());
     }

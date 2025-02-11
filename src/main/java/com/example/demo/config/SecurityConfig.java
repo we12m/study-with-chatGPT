@@ -21,7 +21,7 @@ public class SecurityConfig {
         http
                 .csrf(crsf -> crsf.disable()) // csrf 보호 기능 비활성화, JWT(json Web Token)을 사용하기 위함
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/send-email", "/actuator/**").permitAll()
+                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/notify/**", "/actuator/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // 내부적으로 "ROLE_ADMIN"과 비교함
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider) , UsernamePasswordAuthenticationFilter.class);

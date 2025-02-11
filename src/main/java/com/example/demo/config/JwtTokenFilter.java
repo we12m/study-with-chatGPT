@@ -29,7 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
 
-        if (requestURI.startsWith("/actuator")) {
+        if (requestURI.startsWith("/actuator") || requestURI.startsWith("/notify") || requestURI.startsWith("/")) {
             filterChain.doFilter(request, response);
             return;
         }
