@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        function connect() {
+          var socket = new SockJS('/ws');
+          stompClient = Stomp.over(socket);
+          stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/notifications', function(notification){
+              showNotification(notification.body);
+            });
+          });
+        }
+
+        function disconnect() {
+          if (stompClient !== null) {
+            stompClient.disconnect();
+          }
+          console.log("Disconnected");
+        }
+
+        function sendNotification() {
+          var message = document.getElementById("message").value;
+          stompClient.send("/app/notify", {}, message);
+        }
+
+        function showNotification(message) {
+          var response = document.getElementById("response");
+          var p = document.createElement("p");
+          p.appendChild(document.createTextNode(message));
+          response.appendChild(p);
+        }
+
+        window.onload = function() {
+          connect();
+        };
+    </script>
+</head>
+<body>
+<h2>WebSocket Notification Test</h2>
+<input type="text" id="message" placeholder="Enter message" />
+<button onclick="sendNotification()">Send</button>
+<div id="response"></div>
+</body>
+</html>
